@@ -1,8 +1,7 @@
+import queue
 import threading
 
 import cherrypy
-
-from . import task
 
 
 class Worker(threading.Thread):
@@ -32,9 +31,10 @@ class Worker(threading.Thread):
     def run(self):
         cherrypy.log('WORKER #{} started'.format(self.id))
         while self.running:
-            current_task = self.queue.get()
+            try:
+                current_task = self.queue.get_nowait()
+            except queue.Empty:
+                continue
             if current_task.deleted:
                 continue
-            if current_task is task.TaskStopper:
-                break
         cherrypy.log('WORKER #{} stopped'.format(self.id))

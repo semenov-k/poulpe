@@ -7,7 +7,6 @@ class StatusPriority(enum.Enum):
     """
     Приоритет задачи в зависимости от статуса с которым она запускается
     """
-    STOPPER = 1
     LAUNCHED = 25
     SCHEDULED = 50
     NEW = 100
@@ -26,13 +25,6 @@ class OrderedItem:
 
     def __lt__(self, other):
         return self._priority < other.priority
-
-
-class TaskStopper(OrderedItem):
-    """
-    Класс завершающий прием задач из очереди
-    """
-    pass
 
 
 class Task(OrderedItem):
